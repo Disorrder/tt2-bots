@@ -1,0 +1,107 @@
+// easy bot tt2 - 0.0.0 - WIP
+DEVICE: MI NOTE Pro 4.4.2
+SCREEN_SIZE: 480x800 (softkey)
+
+var #enableFairies 0
+var #enableTapping 1
+
+var #hitDelay 40
+var #btnDelay 150
+var #slideDelay 1000
+
+var #mainLoop 0
+
+:start
+    #mainLoop = #mainLoop + 1
+
+    if #mainLoop < 2
+        goto :closeTabs
+    endif
+    if #mainLoop < 4
+        goto :skillFireblade
+    endif
+
+    if #mainLoop < 600
+        goto :randomTouch
+    endif
+
+    if #mainLoop < 601
+        goto :closeTabs
+    endif
+    if #mainLoop < 602
+        goto :switchTabUnits
+    endif
+
+    if #mainLoop < 615
+        goto :upgradeUnits
+    endif
+    if #mainLoop < 616
+        goto :closeTabs
+    endif
+
+:end
+    #mainLoop = 0
+    goto :start
+
+// --- close tabs ---
+:closeTabs
+    touchDown 0 437 458
+    touchUp 0
+    sleep #btnDelay
+goto :start
+
+// --- switch tabs ---
+:switchTabUnits
+    touchDown 0 110 790
+    sleep #hitDelay
+    touchUp 0
+goto :start
+
+// --- tab0: activate skills ---
+:skillFireblade
+    touchPress 0 270 720
+goto :start
+
+// --- tab2: upgrade units ---
+:upgradeUnits
+    // touchDown 1 270 730
+    // sleep #slideDelay
+    // touchMove 1 270 500
+    // touchUp 1
+
+	touchMove 1 280 730
+	touchMove 1 280 735
+	sleep 100
+	touchMove 1 280 700
+	touchMove 1 280 690
+	sleep 50
+	touchMove 1 280 500
+	touchUp 1
+	sleep 200
+
+    touchPress 0 400 740
+    sleep #btnDelay
+
+    touchPress 0 400 666
+    sleep #btnDelay
+
+    touchPress 0 400 580
+    sleep #btnDelay
+goto :start
+
+// ----------- RANDOM ATTACK
+:randomTouch
+	if #enableFairies == 1
+		rand #randomX 60 415
+		rand #randomY 160 420
+	else
+		rand #randomX 60 415
+		rand #randomY 270 420
+	endif
+	if #enableTapping == 1
+		touchDown 0 #randomX #randomY
+		touchUp 0
+	endif
+	sleep #hitDelay
+	#time = #time + #hitDelay
+goto :start
